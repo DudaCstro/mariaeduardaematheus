@@ -10,7 +10,7 @@ export default function TabelaFornecedor(props) {
     function excluirFornecedor(fornecedor) {
         if (window.confirm("Dejesa excluir o fornecedor " + fornecedor.nome)) {
             props.setListaFornecedores(props.listaFornecedores.filter((item) => {
-                    return item.id != fornecedor.id
+                    return item.id !== fornecedor.id
             }));
         }
     }
@@ -68,7 +68,7 @@ export default function TabelaFornecedor(props) {
                         }
                     </tbody>
                 </Table>
-                <p>Quantidade de fornecedores cadastrador: {props.listaFornecedores.length}</p>
+                <p>Quantidade de fornecedores cadastrados: {props.listaFornecedores.length}</p>
             </Container>
         </div>
     );

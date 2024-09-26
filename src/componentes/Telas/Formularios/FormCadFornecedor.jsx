@@ -13,7 +13,7 @@ export default function FormCadFornecedor(props) {
         const form = evento.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                props.setListaFornecedores([...props.ListaFornecedores, fornecedor]);
+                props.setListaFornecedores([...props.listaFornecedores, fornecedor]);
                 props.setExibirTabela(true);
             }
             else {
