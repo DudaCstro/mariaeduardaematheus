@@ -8,6 +8,9 @@ export const clientes = [
     },
     {
         "nome":"Violeta dos Anjos",
-        ""
+        "cpf":"222.222.222.22",
+        "endereco":"Rua dos Tamarindos, 84",
+        "dataNasc":"31/02/2000",
+        "codigo":2
     }
 ]

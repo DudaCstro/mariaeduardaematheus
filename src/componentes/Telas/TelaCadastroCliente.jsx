@@ -1,5 +1,5 @@
 import Pagina from "../layouts/Pagina";
-
+import TabelaClientes from "./Tabelas/TabelaClientes";
 //props ->passa dado de componente pai para filho
 export default function TelaCadastroCliente(props){
 
