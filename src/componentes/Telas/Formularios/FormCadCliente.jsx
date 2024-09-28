@@ -1,147 +1,175 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
 
 export default function FormCadCliente(props) {
-    const [cliente, setCliente] = useState(props.clienteSelecionado);
-    const [formValidado, setFormValidado] = useState(false);   
-   
-   function manipularSubmissao(evento){
-        const form = evento.currentTarget;
-        if(form.checkValidity()){
-            if(!props.modoEdicao){
-                props.setListaClientes([...props.listaClientes, cliente]);
-                props.setExibirClientes(true);
-            }
+    // Verifica se existe clienteSelecionado e inicializa corretamente
+    const [cliente, setCliente] = useState(
+        props.clienteSelecionado || {
+            codigo: "",
+            nome: "",
+            cpf: "",
+            endereco: "",
+            dataNasc: ""
         }
-   }
+    );
+    const [formValidado, setFormValidado] = useState(false);
 
+    // Atualiza o estado do cliente se o prop mudar
+    useEffect(() => {
+        setCliente(props.clienteSelecionado || {
+            codigo: "",
+            nome: "",
+            cpf: "",
+            endereco: "",
+            dataNasc: ""
+        });
+    }, [props.clienteSelecionado]);
+
+    function manipularSubmissao(evento) {
+        evento.preventDefault(); // Impede o comportamento padrão do formulário
+        evento.stopPropagation(); // Impede a propagação do evento
+
+        const form = evento.currentTarget;
+        if (form.checkValidity()) {
+            if (!props.modoEdicao) {
+                // Cadastrar o cliente
+                props.setListaClientes([...props.listaClientes, cliente]);
+            } else {
+                // Atualizar o cliente existente
+                props.setListaClientes(props.listaClientes.map((item) => 
+                    item.codigo !== cliente.codigo ? item : cliente
+                ));
+                // Voltar para o modo de inclusão
+                props.setModoEdicao(false);
+                props.setClienteSelecionado({
+                    codigo: 0,
+                    nome: "",
+                    cpf: "",
+                    endereco: "",
+                    dataNasc: ""
+                });
+            }
+            props.setExibirTabela(true);
+        } else {
+            setFormValidado(true);
+        }
+    }
+
+    function manipularMudanca(evento) {
+        const elemento = evento.target.name;
+        const valor = evento.target.value; 
+        setCliente({ ...cliente, [elemento]: valor });
+    }
 
     return (
-        <div>
-            <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
-                <Row className="mb-4">
-                    <Form.Group as={Col} md="4">
-                        <Form.Label>Código</Form.Label>
+        <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
+            <Row className="mb-4">
+                <Form.Group as={Col} md="4">
+                    <Form.Label>Código</Form.Label>
+                    <InputGroup hasValidation>
                         <Form.Control
                             required
                             type="text"
                             id="codigo"
                             name="codigo"
-                            value={produto.codigo}
+                            value={cliente.codigo}
                             disabled={props.modoEdicao}
                             onChange={manipularMudanca}
                         />
-                        <Form.Control.Feedback type='invalid'>Por favor, informe o código do produto!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-4">
-                    <Form.Group as={Col} md="12">
-                        <Form.Label>Descrição</Form.Label>
+                        <Form.Control.Feedback type='invalid'>
+                            Código inválido.
+                        </Form.Control.Feedback>
+                    </InputGroup>
+                </Form.Group>
+            </Row>
+
+            <Row className="mb-4">
+                <Form.Group as={Col} md="12">
+                    <Form.Label>Nome</Form.Label>
+                    <Form.Control
+                        required
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        value={cliente.nome}
+                        onChange={manipularMudanca}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        Por favor, informe o nome completo.
+                    </Form.Control.Feedback>
+                </Form.Group>
+            </Row>
+
+            <Row className="mb-4">
+                <Form.Group as={Col} md="4">
+                    <Form.Label>CPF</Form.Label>
+                    <InputGroup hasValidation>
                         <Form.Control
-                            required
                             type="text"
-                            id="descricao"
-                            name="descricao"
-                            value={produto.descricao}
+                            id="cpf"
+                            name="cpf"
+                            aria-describedby="cpf"
+                            value={cliente.cpf}
                             onChange={manipularMudanca}
+                            required
                         />
-                        <Form.Control.Feedback type="invalid">Por favor, informe a descrição do produto!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-4">
-                    <Form.Group as={Col} md="4">
-                        <Form.Label>Preço de Custo:</Form.Label>
-                        <InputGroup hasValidation>
-                            <InputGroup.Text id="precoCusto">R$</InputGroup.Text>
-                            <Form.Control
-                                type="text"
-                                id="precoCusto"
-                                name="precoCusto"
-                                aria-describedby="precoCusto"
-                                value={produto.precoCusto}
-                                onChange={manipularMudanca}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                Por favor, informe o preço de custo!
-                            </Form.Control.Feedback>
-                        </InputGroup>
-                    </Form.Group>
-                    <Form.Group as={Col} md="4">
-                        <Form.Label>Preço de Venda:</Form.Label>
-                        <InputGroup hasValidation>
-                            <InputGroup.Text id="precoVenda">R$</InputGroup.Text>
-                            <Form.Control
-                                type="text"
-                                id="precoVenda"
-                                name="precoVenda"
-                                aria-describedby="precoVenda"
-                                value={produto.precoVenda}
-                                onChange={manipularMudanca}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                Por favor, informe o preço de venda!
-                            </Form.Control.Feedback>
-                        </InputGroup>
-                    </Form.Group>
-                    <Form.Group as={Col} md="4">
-                        <Form.Label>Qtd em estoque:</Form.Label>
-                        <InputGroup hasValidation>
-                            <InputGroup.Text id="qtdEstoque">+</InputGroup.Text>
-                            <Form.Control
-                                type="text"
-                                id="qtdEstoque"
-                                name="qtdEstoque"
-                                aria-describedby="qtdEstoque"
-                                value={produto.qtdEstoque}
-                                onChange={manipularMudanca}
-                                required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                Por favor, informe a quantidade em estoque!
-                            </Form.Control.Feedback>
-                        </InputGroup>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-4">
-                    <Form.Group as={Col} md="12">
-                        <Form.Label>Url da imagem:</Form.Label>
+                        <Form.Control.Feedback type="invalid">
+                            Por favor, informe o cpf!
+                        </Form.Control.Feedback>
+                    </InputGroup>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4">
+                    <Form.Label>Endereço</Form.Label>
+                    <InputGroup hasValidation>
                         <Form.Control
-                            required
                             type="text"
-                            id="urlImagem"
-                            name="urlImagem"
-                            value={produto.urlImagem}
+                            id="endereco"
+                            name="endereco"
+                            aria-describedby="endereco"
+                            value={cliente.endereco}
                             onChange={manipularMudanca}
+                            required
                         />
-                        <Form.Control.Feedback type="invalid">Por favor, informe a url da imagem do produto!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-4">
-                    <Form.Group as={Col} md="12">
-                        <Form.Label>Válido até:</Form.Label>
+                        <Form.Control.Feedback type="invalid">
+                            Por favor, informe o endereço!
+                        </Form.Control.Feedback>
+                    </InputGroup>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4">
+                    <Form.Label>Data de nascimento</Form.Label>
+                    <InputGroup hasValidation>
                         <Form.Control
-                            required
                             type="text"
-                            id="dataValidade"
-                            name="dataValidade"
-                            value={produto.dataValidade}
+                            id="dataNasc"
+                            name="dataNasc"
+                            aria-describedby="dataNasc"
+                            value={cliente.dataNasc}
                             onChange={manipularMudanca}
+                            required
                         />
-                        <Form.Control.Feedback type="invalid">Por favor, informe a data de validade do produto!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className='mt-2 mb-2'>
-                    <Col md={1}>
-                        <Button type="submit">{props.modoEdicao ? "Alterar" : "Confirmar"}</Button>
-                    </Col>
-                    <Col md={{ offset: 1 }}>
-                        <Button onClick={() => {
-                            props.setExibirTabela(true);
-                        }}>Voltar</Button>
-                    </Col>
-                </Row>
-            </Form>
-        </div>
-    )
+                        <Form.Control.Feedback type="invalid">
+                            Por favor, informe a data de nascimento!
+                        </Form.Control.Feedback>
+                    </InputGroup>
+                </Form.Group>
+            </Row>
+
+            <Row className='mt-2 mb-2'>
+                <Col md={1}>
+                    <Button type="submit">{props.modoEdicao ? "Alterar" : "Confirmar"}</Button>
+                </Col>
+                <Col md={{ offset: 1 }}>
+                    <Button onClick={() => props.setExibirTabela(true)}>
+                        Voltar
+                    </Button>
+                </Col>
+            </Row>
+        </Form>
+    );
 }

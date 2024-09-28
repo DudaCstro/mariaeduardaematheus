@@ -1,18 +1,50 @@
+import { Alert } from "react-bootstrap";
+import FormCadCliente from "./Formularios/FormCadCliente";
 import Pagina from "../layouts/Pagina";
+import { useState } from "react";
 import TabelaClientes from "./Tabelas/TabelaClientes";
-//props ->passa dado de componente pai para filho
-export default function TelaCadastroCliente(props){
+import { clientes } from "../../dados/mockClientes";
 
+export default function TelaCadastroCliente(props) {
+    const [exibirTabela, setExibirTabela] = useState(true);
+    const [listaClientes, setListaClientes] = useState(clientes);
+    const [modoEdicao, setModoEdicao] = useState(false);
+    const [clienteSelecionado, setClienteSelecionado] = useState({
+        codigo: 0,
+        nome: "",
+        cpf: "",
+        endereco: "",
+        dataNasc: ""    
+    });
 
-
-    return(
+    return (
         <div>
             <Pagina>
-            <Alert className="mt-02 mb-02 success text-center" variant="success">
-                <h2>Cadastro de Cliente</h2>
-            </Alert>
-            
+                <Alert className="mt-2 mb-2 text-center" variant="success">
+                    <h2>Cadastro de Cliente</h2>
+                </Alert>
+                {
+                    exibirTabela ? (
+                        <TabelaClientes
+                            listaClientes={listaClientes}
+                            setListaClientes={setListaClientes}
+                            setExibirTabela={setExibirTabela}
+                            setModoEdicao={setModoEdicao}
+                            setClienteSelecionado={setClienteSelecionado}  // Passar setClienteSelecionado corretamente
+                        />
+                    ) : (
+                        <FormCadCliente
+                            listaClientes={listaClientes}
+                            setListaClientes={setListaClientes}
+                            setExibirTabela={setExibirTabela}
+                            clienteSelecionado={clienteSelecionado}
+                            setClienteSelecionado={setClienteSelecionado}
+                            modoEdicao={modoEdicao}
+                            setModoEdicao={setModoEdicao}
+                        />
+                    )
+                }
             </Pagina>
         </div>
-    )
+    );
 }
