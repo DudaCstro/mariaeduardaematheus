@@ -1,16 +1,44 @@
 import { Alert } from "react-bootstrap";
 import FormCadCategorias from "./Formularios/FormCadCategoria";
 import Pagina from "../layouts/Pagina";
+import { useState } from "react";
+import TabelaCategoria from "./Tabelas/TabelaCategorias";
+import { categoria } from "../../dados/mockCategoria"
+ 
 export default function TelaCadastroCategoria(props) {
+    const [exibirTabela, setExibirTabela] = useState(true);
+    const [listaCategoria, setListaCategoria] = useState(categoria);
+    const [modoEdicao, setModoEdicao] = useState(false);
+    const [categoriaSel, setCategoriaSel] = useState({
+        codigo: 0,
+        descricao: ""
+    });
+
     return (
         <div>
             <Pagina>
-                |<Alert className="mt-02 mb-02 success text-center" variant="success">
-                    <h2>
-                        Cadastro de Categoria
-                    </h2>
+                <Alert className="mt-02 mb-02 success text-center" variant="success">
+                    <h2>Cadastro de Categoria</h2>
                 </Alert>
-                <FormCadCategorias />
+                {
+                    exibirTabela ?
+                    <TabelaCategoria
+                        listaCategoria={listaCategoria}
+                        setListaCategoria={setListaCategoria}
+                        setExibirTabela={setExibirTabela}
+                        setModoEdicao={setModoEdicao}
+                        setCategoriaSel={setCategoriaSel}
+                    /> : 
+                    <FormCadCategorias
+                        listaCategoria={listaCategoria}
+                        setListaCategoria={setListaCategoria}
+                        setExibirTabela={setExibirTabela}
+                        setModoEdicao={setModoEdicao}
+                        setCategoriaSel={setCategoriaSel}
+                        categoriaSel={categoriaSel}
+                        modoEdicao={modoEdicao}
+                    />
+                }
             </Pagina>
         </div>
     );
