@@ -13,6 +13,6 @@ export const fornecedores = [
         "cnpj": "21.543.876/0001-91",
         "cep": "91520-012",
         "telefone": "(11) 99704-6395",
-        "email": "contato@fitnessupplies.com"
+        "email": "contato@danone.com"
     }
 ];

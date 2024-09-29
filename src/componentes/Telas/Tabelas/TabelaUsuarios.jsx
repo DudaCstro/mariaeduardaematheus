@@ -1,24 +1,25 @@
 import { Button, Container, Table } from "react-bootstrap";
 
-export default function TabelaClientes(props) {
-    function editarCliente(cliente) {
+export default function TabelaUsuarios(props) {
+    
+    function editarUsuario(usuario) {
         props.setModoEdicao(true);
-        props.setClienteSelecionado(cliente);
+        props.setUsuarioSelecionado(usuario);
         props.setExibirTabela(false);
     }
 
-    function excluirCliente(cliente) {
-        if (window.confirm("Deseja realmente excluir o cadastro de cliente?" + cliente.nome)) {
-            props.setListaClientes(props.listaClientes.filter(
-                (item) => item.codigo !== cliente.codigo
+    function excluirUsuario(usuario) {
+        if (window.confirm("Deseja realmente excluir o cadastro de usuário:" + usuario.nome)) {
+            props.setListaUsuarios(props.listaUsuarios.filter(
+                (item) => item.codigo !== usuario.codigo
             ));
         }
     }
 
     return (
-        <>
+        <div>
             <Container>
-                <Button className="mb-3" variant="primary"
+            <Button className="mb-3" variant="primary"
                     onClick={() => {
                         props.setExibirTabela(false);
                     }}>
@@ -29,25 +30,24 @@ export default function TabelaClientes(props) {
                         <tr>
                             <th>Código</th>
                             <th>Nome</th>
-                            <th>CPF</th>
-                            <th>Endereço</th>
-                            <th>Data de nascimento</th>
-                            <th>Ações</th>
+                            <th>RG</th>
+                            <th>Função</th>
+                            <th>Senha</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            props.listaClientes?.map((cliente) => {
+                            props.listaUsuarios?.map((usuario) => {
                                 return (
-                                    <tr key={cliente.codigo}>
-                                        <td>{cliente.codigo}</td>
-                                        <td>{cliente.nome}</td>
-                                        <td>{cliente.cpf}</td>
-                                        <td>{cliente.endereco}</td>
-                                        <td>{cliente.dataNasc}</td>
+                                    <tr key={usuario.codigo}>
+                                        <td>{usuario.codigo}</td>
+                                        <td>{usuario.nome}</td>
+                                        <td>{usuario.rg}</td>
+                                        <td>{usuario.funcao}</td>
+                                        <td>{usuario.senha}</td>
                                         <td>
                                             <Button onClick={() => {
-                                                editarCliente(cliente);
+                                                editarUsuario(usuario);
                                             }} variant="warning">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
@@ -55,7 +55,7 @@ export default function TabelaClientes(props) {
                                                 </svg>
                                             </Button>
                                             <Button onClick={() => {
-                                                excluirCliente(cliente);
+                                                excluirUsuario(usuario);
                                             }} variant="danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
@@ -69,8 +69,9 @@ export default function TabelaClientes(props) {
                         }
                     </tbody>
                 </Table>
-                <p>Quantidade de clientes cadastrados: {props.listaClientes.length}</p>
-                </Container>
-        </>
+                <p>Quantidade de usuários cadastrados: {props.listaUsuarios.length}</p>
+            </Container>
+        </div>
     );
+
 }

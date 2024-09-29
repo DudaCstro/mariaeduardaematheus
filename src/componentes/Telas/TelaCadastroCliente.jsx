@@ -30,7 +30,7 @@ export default function TelaCadastroCliente(props) {
                             setListaClientes={setListaClientes}
                             setExibirTabela={setExibirTabela}
                             setModoEdicao={setModoEdicao}
-                            setClienteSelecionado={setClienteSelecionado}  // Passar setClienteSelecionado corretamente
+                            setClienteSelecionado={setClienteSelecionado}
                         />
                     ) : (
                         <FormCadCliente
