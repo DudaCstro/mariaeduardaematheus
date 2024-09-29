@@ -4,7 +4,7 @@ export const entregador = [
         "nome": "Jesus",
         "cnh": "123",
         "veiculo": "bicicleta",
-        "placa": "jsx-6969"
+        "placa": "jsx-4554"
     },
     {
         "id": 2,
