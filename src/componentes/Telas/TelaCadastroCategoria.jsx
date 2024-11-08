@@ -3,11 +3,10 @@ import FormCadCategorias from "./Formularios/FormCadCategoria";
 import Pagina from "../layouts/Pagina";
 import { useState } from "react";
 import TabelaCategoria from "./Tabelas/TabelaCategorias";
-import { categoria } from "../../dados/mockCategoria"
+//import { categoria } from "../../dados/mockCategoria"
  
 export default function TelaCadastroCategoria(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
-    const [listaCategoria, setListaCategoria] = useState(categoria);
     const [modoEdicao, setModoEdicao] = useState(false);
     const [categoriaSel, setCategoriaSel] = useState({
         codigo: 0,
@@ -23,15 +22,11 @@ export default function TelaCadastroCategoria(props) {
                 {
                     exibirTabela ?
                     <TabelaCategoria
-                        listaCategoria={listaCategoria}
-                        setListaCategoria={setListaCategoria}
                         setExibirTabela={setExibirTabela}
                         setModoEdicao={setModoEdicao}
                         setCategoriaSel={setCategoriaSel}
                     /> : 
                     <FormCadCategorias
-                        listaCategoria={listaCategoria}
-                        setListaCategoria={setListaCategoria}
                         setExibirTabela={setExibirTabela}
                         setModoEdicao={setModoEdicao}
                         setCategoriaSel={setCategoriaSel}
