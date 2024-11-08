@@ -5,7 +5,7 @@ import {
 import { useState, useEffect } from 'react';
 import { consultarCategoria } from '../../../servicos/servicoCategoria';
 import { gravarProduto } from '../../../servicos/servicoProduto';
-
+import { alterarProduto } from '../../../servicos/servicoProduto';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function FormCadProdutos(props) {
@@ -43,7 +43,6 @@ export default function FormCadProdutos(props) {
     function manipularSubmissao(evento) {
         const form = evento.currentTarget;
         if (form.checkValidity()) {
-
             if (!props.modoEdicao) {
                 //cadastrar o produto
                 gravarProduto(produto)
@@ -58,24 +57,19 @@ export default function FormCadProdutos(props) {
                     });
             }
             else {
-                //editar o produto
-                /*altera a ordem dos registros
-                props.setListaDeProdutos([...props.listaDeProdutos.filter(
-                    (item) => {
-                        return item.codigo !== produto.codigo;
+                alterarProduto(produto)
+                    .then((resultado) => {
+                        if (resultado.status) {
+                            props.setListaDeProdutos(props.listaDeProdutos.map((item) => 
+                            item.codigo !== produto.codigo ? item : produto
+                        ));                            
                     }
-                ), produto]);*/
-
-                //não altera a ordem dos registros
-                props.setListaDeProdutos(props.listaDeProdutos.map((item) => {
-                    if (item.codigo !== produto.codigo)
-                        return item
-                    else
-                        return produto
-                }));
-
-                //voltar para o modo de inclusão
+                    else {
+                        toast.error(resultado.mensagem);
+                    }
+                });
                 props.setModoEdicao(false);
+                props.setExibirTabela(true);
                 props.setProdutoSelecionado({
                     codigo: 0,
                     descricao: "",
@@ -85,9 +79,7 @@ export default function FormCadProdutos(props) {
                     urlImagem: "",
                     dataValidade: ""
                 });
-                props.setExibirTabela(true);
             }
-
         }
         else {
             setFormValidado(true);
