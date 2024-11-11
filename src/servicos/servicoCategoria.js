@@ -1,4 +1,4 @@
-const urlBase = 'https://bcc-backend-lp-2-five.vercel.app/categorias';
+const urlBase = 'https://backendlpii-git-main-dudacstros-projects.vercel.app/categorias';
 
 export async function gravarCategoria(categoria){
     const resposta = await fetch(urlBase,{
